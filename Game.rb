@@ -37,9 +37,9 @@ class Game
         @b.board[@objx.row][@objx.col]=@p1.move_token 
         # puts "Now currently obj b is #{@b.inspect}"       
         @b.printBoard
-
         @@a=2
         @@draw_counter=0
+
         #pseudocode
         until self.ended?
             # puts "Inside Self.ended"
@@ -104,49 +104,38 @@ class Game
         # puts "Inside handle Next Move"
     #    while (@@a<=@b.board_size*@b.board_size)
             if(@@a%2!=0)
-                puts " "
+                puts
                 puts "Now #{@p1.identifier} turn"
                 puts "Place #{@p1.move_token} in board"
                 puts ""
                 @objx=@p1.askNextMove
-                if(@objx.row>=@b.board_size || @objx.col>=@b.board_size)
-                    puts "#{@p1.identifier} choose valid row and column"
-                    puts "==================================================="
+                if(@objx.row>=@b.board_size||@objx.col>=@b.board_size)
+                    puts " "
+                    puts "Choose valid row and column"
                     self.handleNextMove
+                    puts "==================================================="
                 else
-                    if(@b.board[@objx.row][@objx.col]!="")
-                        puts "#{@p1.identifier} please select another cell"
-                        puts "==================================================="
-                        self.handleNextMove  
-                    else
-                        @b.board[@objx.row][@objx.col]=@p1.move_token
-                        puts ""
-                        @b.printBoard
-                        @@a+=1      
-                    end    
-                end  
-            else 
-                puts " "
+                    @b.board[@objx.row][@objx.col]=@p1.move_token
+                    @b.printBoard
+                    @@a+=1   
+                end 
+                
+            else
+                puts
                 puts "Now #{@p2.identifier} turn"
                 puts "Place #{@p2.move_token} in board"
                 puts ""
-                @objx=@p2.askNextMove
-                if(@objx.row>=@b.board_size || @objx.col>=@b.board_size)
-                    puts "{@p2.identifier} choose valid row and column"
-                    puts "==================================================="
+                @objO=@p2.askNextMove
+                if(@objO.row>=@b.board_size||@objO.col>=@b.board_size)
+                    puts " "
+                    puts "Choose valid row and column"
                     self.handleNextMove
+                    puts "==================================================="
                 else
-                    if(@b.board[@objx.row][@objx.col]!="")
-                        puts "#{@p2.identifier} select another cell"
-                        puts "==================================================="
-                        self.handleNextMove  
-                    else
-                        @b.board[@objx.row][@objx.col]=@p2.move_token
-                        puts ""
-                        @b.printBoard
-                        @@a+=1      
-                    end    
-                end
+                    @b.board[@objO.row][@objO.col]=@p2.move_token
+                    @b.printBoard
+                    @@a+=1    
+                end 
             end
             
         # end
