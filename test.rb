@@ -212,29 +212,28 @@ class Game
         ycount=1;
         for i in 0..(board_size-1) do
             for j in 0...(board_size-1) do
-                    # puts "I is #{i}"
-                    # puts "J is #{j}"  
-                    if(board[i][j]=="X" && board[i][j+1]=="X")
-                        xcount=xcount+1;
-                        if(xcount==board_size)
-                            #  puts "Player X wins the game"
-                            return @result=@p1.identifier
-                            # return true;
-                            break;
-                        end
-                    elsif(board[i][j]=="O" && board[i][j+1]=="O")
-                        ycount=ycount+1;
-                        if(ycount==board_size)
-                            # puts "Player O  wins the game"
-                            return @result=@p2.identifier
-                            # return true;
-                            break;
-                        end
-                    else
-                        # puts "No Diagonal"
-                        return false 	
+                # puts "I is #{i}"
+                # puts "J is #{j}"  
+                if(board[i][j]=="X" && board[i][j+1]=="X")
+                    xcount=xcount+1;
+                    if(xcount==board_size)
+                        #  puts "Player X wins the game"
+                        return @result=@p1.identifier
+                        # return true;
+                        break;
                     end
-            		
+                elsif(board[i][j]=="O" && board[i][j+1]=="O")
+                    ycount=ycount+1;
+                    if(ycount==board_size)
+                        # puts "Player O  wins the game"
+                        return @result=@p2.identifier
+                        # return true;
+                        break;
+                    end
+                else
+                    # puts "No Diagonal"
+                    return false 	
+                end  		
             end												
         end
     end

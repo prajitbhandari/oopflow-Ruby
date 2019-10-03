@@ -28,7 +28,7 @@ class Board
        
             if (x != self.board_size-1)
                 print "\n"
-                for i in 0...(self.board_size + (self.board_size * 3)) do
+                for i in 0...(self.board_size + (self.board_size * 6)) do
                     print "="
                 end
                 print "\n"
