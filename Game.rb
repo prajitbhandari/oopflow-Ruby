@@ -10,10 +10,15 @@ class Game
     end
     
     def askBoardSize
-        puts "Welcome to Tic Tac Toe Game"
+        puts "Welcome to Tic Tac Toe Game!!!"
     #   prompt board size form user
         puts "Enter the size of the Board Grid"
         @size=(gets.chomp).to_i
+        if(@size<2)
+            puts "Please Provide Size Greater than or equal to 2"
+            puts 
+            self.askBoardSize
+        end
         # puts "The Board size is #{@size}"
         return @size
     end
@@ -25,7 +30,7 @@ class Game
         puts ""
         @objx=@p1.askNextMove
         if(@objx.row>=@b.board_size || @objx.col>=@b.board_size)
-            puts "Choose valid row and column"
+            puts "#{@p1.identifier} choose valid row and column"
             puts "==================================================="
             self.proceed
         end
@@ -105,17 +110,21 @@ class Game
                 puts ""
                 @objx=@p1.askNextMove
                 if(@objx.row>=@b.board_size || @objx.col>=@b.board_size)
-                    puts "Choose valid row and column"
+                    puts "#{@p1.identifier} choose valid row and column"
                     puts "==================================================="
                     self.handleNextMove
                 else
-                    @b.board[@objx.row][@objx.col]=@p1.move_token
-                    puts ""
-                    @b.printBoard
-                    @@a+=1
-                end
-               
-                
+                    if(@b.board[@objx.row][@objx.col]!="")
+                        puts "#{@p1.identifier} please select another cell"
+                        puts "==================================================="
+                        self.handleNextMove  
+                    else
+                        @b.board[@objx.row][@objx.col]=@p1.move_token
+                        puts ""
+                        @b.printBoard
+                        @@a+=1      
+                    end    
+                end  
             else 
                 puts " "
                 puts "Now #{@p2.identifier} turn"
@@ -123,13 +132,20 @@ class Game
                 puts ""
                 @objx=@p2.askNextMove
                 if(@objx.row>=@b.board_size || @objx.col>=@b.board_size)
-                    puts "Choose valid row and column"
+                    puts "{@p2.identifier} choose valid row and column"
                     puts "==================================================="
                     self.handleNextMove
                 else
-                    @b.board[@objx.row][@objx.col]=@p2.move_token
-                    @b.printBoard
-                    @@a+=1
+                    if(@b.board[@objx.row][@objx.col]!="")
+                        puts "#{@p2.identifier} select another cell"
+                        puts "==================================================="
+                        self.handleNextMove  
+                    else
+                        @b.board[@objx.row][@objx.col]=@p2.move_token
+                        puts ""
+                        @b.printBoard
+                        @@a+=1      
+                    end    
                 end
             end
             
