@@ -3,7 +3,6 @@ class Game
     def initialize
         @p1 = Player.new('Player 1',"X")
         @p2 = Player.new('Player 2',"O")
-
         @boardSize = self.askBoardSize
         @b = Board.new(@boardSize,@p1,@p2)
         @b.show
@@ -23,26 +22,40 @@ class Game
         puts " "
         puts "First Proceed Player #{@p1.identifier} turn"
         puts "Place #{@p1.move_token}"
+        puts ""
         @objx=@p1.askNextMove
+        if(@objx.row>=@b.board_size || @objx.col>=@b.board_size)
+            puts "Choose valid row and column"
+            puts "==================================================="
+            self.proceed
+        end
         @b.board[@objx.row][@objx.col]=@p1.move_token 
         # puts "Now currently obj b is #{@b.inspect}"       
-        @b.play
+        @b.printBoard
 
-        @my_counter=1
-        while (@my_counter<=@b.board_size*@b.board_size)
-            unless self.ended?
-                puts "Hi There Check Out"
-                self.handleNextMove       
-            end
-            @my_counter+=1 
+        @@a=2
+        @@draw_counter=0
+        #pseudocode
+        until self.ended?
+            # puts "Inside Self.ended"
+            puts 
+            puts "==================================================="
+            self.handleNextMove
         end
-        puts " "
-        puts "#{@result} wins the game!!!"
-        # puts "Now Show Result"
-        # self.showResult
-        # if(self.ended?)
-        #     self.showResult
+
+        self.showResult
+
+        #end of pseudocode
+        # @my_counter=1
+        # while (@my_counter<=@b.board_size*@b.board_size)
+        #     unless self.ended?
+        #         puts "Hi There Check Out"
+        #         self.handleNextMove       
+        #     end
+        #     @my_counter+=1 
         # end
+        # puts " "
+        # puts "#{@result} wins the game!!!"
         
         # unless self.ended?
         #     self.handleNextMove  
@@ -58,45 +71,69 @@ class Game
     def gameIsWon?
         # referencePlayer
         # referencePlayerMoves
-        self.leftDiagonal(@b.board,@b.board_size)||
         self.rightDiagonal(@b.board,@b.board_size)||
+        self.leftDiagonal(@b.board,@b.board_size)||
         self.checkRow(@b.board,@b.board_size)||
         self.checkColumn(@b.board,@b.board_size)   
     end
     
     def gameIsDraw?
-        # if(@my_counter==@b.board_size*@b.board_size)
-        #     puts "@my counter is #{@my_counter} and board size is #{@b.board_size}"
-            if( self.leftDiagonal(@b.board,@b.board_size)==false &&
+        @@draw_counter+=1
+        # puts "i am in"
+        if(@@draw_counter==@b.board_size*@b.board_size)
+            # puts "Sorry both Tied"
+            if(self.leftDiagonal(@b.board,@b.board_size)==false &&
                 self.rightDiagonal(@b.board,@b.board_size)==false &&
                 self.checkRow(@b.board,@b.board_size)==false &&
                 self.checkColumn(@b.board,@b.board_size)==false
               )
-              puts "Game is Tied"
-            end
-        # end
+              return true
+            end 
+        else
+            return false  
+        end
+       
     end
 
-    def handleNextMove
+    def handleNextMove   
         # puts "Inside handle Next Move"
-        @@a=2
-       while (@@a<=@b.board_size*@b.board_size)
+    #    while (@@a<=@b.board_size*@b.board_size)
             if(@@a%2!=0)
-                puts "Player #{@p1.identifier} turn"
-                puts "Place #{@p1.move_token}"
+                puts " "
+                puts "Now #{@p1.identifier} turn"
+                puts "Place #{@p1.move_token} in board"
+                puts ""
                 @objx=@p1.askNextMove
-                @b.board[@objx.row][@objx.col]=@p1.move_token
-                puts "The board value is #{@b.board}"
-                @b.play
+                if(@objx.row>=@b.board_size || @objx.col>=@b.board_size)
+                    puts "Choose valid row and column"
+                    puts "==================================================="
+                    self.handleNextMove
+                else
+                    @b.board[@objx.row][@objx.col]=@p1.move_token
+                    puts ""
+                    @b.printBoard
+                    @@a+=1
+                end
+               
+                
             else 
-                puts "Player #{@p2.identifier} turn"
-                puts "Place #{@p2.move_token}"
-                @objO=@p2.askNextMove
-                @b.board[@objO.row][@objO.col]=@p2.move_token
-                @b.play
+                puts " "
+                puts "Now #{@p2.identifier} turn"
+                puts "Place #{@p2.move_token} in board"
+                puts ""
+                @objx=@p2.askNextMove
+                if(@objx.row>=@b.board_size || @objx.col>=@b.board_size)
+                    puts "Choose valid row and column"
+                    puts "==================================================="
+                    self.handleNextMove
+                else
+                    @b.board[@objx.row][@objx.col]=@p2.move_token
+                    @b.printBoard
+                    @@a+=1
+                end
             end
-            @@a+=1
-        end
+            
+        # end
 
     end
 
@@ -111,7 +148,6 @@ class Game
                     if(board[i][j]=="X" && board[i+1][j+1]=="X")
                         xlcount=xlcount+1;
                         if(xlcount==board_size)
-                            #  puts "Player X wins the game"
                             return @result=@p1.identifier
                             # return true;
                             break;
@@ -232,15 +268,17 @@ class Game
     end
     
 
-    # def showResult   
-    #     if(gameIsWon?)
-    #         puts "Player #{@identifier} wins"
-    #         exit
-    #     # elsif(gameIsDraw?)
-    #     #     puts "Game is Tied"
-    #     end
-    # end
-    
+    def showResult   
+        if(self.gameIsWon?)
+            puts ""
+            puts "Yay #{@result} wins!!!"
+            # exit
+        elsif(!self.gameIsDraw?)
+            puts ""
+            puts "Game is Tied"
+        end
+    end
+ 
 end
 
 @game=Game.new

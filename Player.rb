@@ -12,8 +12,13 @@ class Player
     def askNextMove
         # newUserMove //
         puts "Enter the move_mark at available Array index [][]"
+        puts " "
         @row= (gets.chomp).to_i
-        @col= (gets.chomp).to_i 
+        @col= (gets.chomp).to_i
+        # if(@row==@grid_size && @col==grid_size)
+        #     puts "Choose valid row and column"
+        #     redo
+        # end 
         @obj= Move.new(@row,@col)
         # registerMove(@obj)
     end

@@ -17,7 +17,7 @@ class Board
     def show
         puts "The Player is #{@p1.identifier} and move token is #{@p1.move_token}"
         puts "The Opponent is #{@p2.identifier} and move token is #{@p2.move_token}"
-
+        puts " "
         for x in 0...(self.board_size) do
             for y in 0...(self.board_size) do
                 print x,y
@@ -39,7 +39,8 @@ class Board
 
     end 
     
-    def play   
+    def printBoard
+        puts " "   
         for x in 0...(self.board_size) do
             for y in 0...(self.board_size) do
                 print self.board[x][y]
