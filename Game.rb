@@ -28,6 +28,7 @@ class Game
         puts "First Proceed Player #{@p1.identifier} turn"
         puts "Place #{@p1.move_token}"
         puts ""
+        puts "FIrst Board is #{@b.board}"
         @objx=@p1.askNextMove
         if(@objx.row>=@b.board_size || @objx.col>=@b.board_size)
             puts "#{@p1.identifier} choose valid row and column"
@@ -48,7 +49,7 @@ class Game
             self.handleNextMove
         end
 
-        self.showResult
+        # self.showResult
 
         #end of pseudocode
         # @my_counter=1
@@ -70,180 +71,173 @@ class Game
     end
     
     def ended?
-        self.gameIsWon?||self.gameIsDraw?
+        self.gameIsWon?
+        #||self.gameIsDraw?
     end
     
     def gameIsWon?
         # referencePlayer
         # referencePlayerMoves
-        self.rightDiagonal(@b.board,@b.board_size)||
-        self.leftDiagonal(@b.board,@b.board_size)||
-        self.checkRow(@b.board,@b.board_size)||
+        # self.rightDiagonal(@b.board,@b.board_size)
+        # self.leftDiagonal(@b.board,@b.board_size)
+        # self.checkRow(@b.board,@b.board_size)
         self.checkColumn(@b.board,@b.board_size)   
     end
     
-    def gameIsDraw?
-        @@draw_counter+=1
-        # puts "i am in"
-        if(@@draw_counter==@b.board_size*@b.board_size)
-            # puts "Sorry both Tied"
-            if(self.leftDiagonal(@b.board,@b.board_size)==false &&
-                self.rightDiagonal(@b.board,@b.board_size)==false &&
-                self.checkRow(@b.board,@b.board_size)==false &&
-                self.checkColumn(@b.board,@b.board_size)==false
-              )
-              return true
-            end 
-        else
-            return false  
-        end
+    # def gameIsDraw?
+    #     puts "Hey Iam game Draw func "
+    #     @@draw_counter+=1
+    #     # puts "i am in"
+    #     if(@@draw_counter==@b.board_size*@b.board_size)
+    #         # puts "Sorry both Tied"
+    #         if(self.leftDiagonal(@b.board,@b.board_size)==false &&
+    #             self.rightDiagonal(@b.board,@b.board_size)==false &&
+    #             self.checkRow(@b.board,@b.board_size)==false &&
+    #             self.checkColumn(@b.board,@b.board_size)==false
+    #           )
+    #           return true
+    #         end 
+    #     else
+    #         return false  
+    #     end
        
-    end
+    # end
 
     def handleNextMove   
         # puts "Inside handle Next Move"
     #    while (@@a<=@b.board_size*@b.board_size)
-            if(@@a%2!=0)
-                puts
-                puts "Now #{@p1.identifier} turn"
-                puts "Place #{@p1.move_token} in board"
-                puts ""
-                @objx=@p1.askNextMove
-                if(@objx.row>=@b.board_size||@objx.col>=@b.board_size)
-                    puts " "
-                    puts "Choose valid row and column"
-                    self.handleNextMove
-                    puts "==================================================="
-                else
-                    @b.board[@objx.row][@objx.col]=@p1.move_token
-                    @b.printBoard
-                    @@a+=1   
-                end 
-                
-            else
-                puts
-                puts "Now #{@p2.identifier} turn"
-                puts "Place #{@p2.move_token} in board"
-                puts ""
-                @objO=@p2.askNextMove
-                if(@objO.row>=@b.board_size||@objO.col>=@b.board_size)
-                    puts " "
-                    puts "Choose valid row and column"
-                    self.handleNextMove
-                    puts "==================================================="
-                else
-                    @b.board[@objO.row][@objO.col]=@p2.move_token
-                    @b.printBoard
-                    @@a+=1    
-                end 
-            end
-            
-        # end
-
-    end
-
-    def leftDiagonal(board,board_size)
-        xlcount=1;
-        olcount=1;
-        for i in 0...(board_size-1) do
-            for j in 0...(board_size-1) do
-                if(i==j)
-                    # puts "I is #{i}"
-                    # puts "J is #{j}"  
-                    if(board[i][j]=="X" && board[i+1][j+1]=="X")
-                        xlcount=xlcount+1;
-                        if(xlcount==board_size)
-                            return @result=@p1.identifier
-                            # return true;
-                            break;
-                        end
-                    elsif(board[i][j]=="O" && board[i+1][j+1]=="O")
-                        olcount=olcount+1;
-                        if(olcount==board_size)
-                            # puts "Player O  wins the game"
-                            return @result=@p2.identifier
-                            # return true;
-                            break;
-                        end
-                    else
-                        # puts "No Diagonal"
-                        return false 	
-                    end
-                end		
-            end												
+        puts "The value of @@a is #{@@a}"
+        # puts "The value of draw counter is #{@@draw_counter}"
+        if(@@a%2!=0)
+            puts
+            puts "Now #{@p1.identifier} turn"
+            puts "Place #{@p1.move_token} in board"
+            puts ""
+            @objx=@p1.askNextMove
+            @b.board[@objx.row][@objx.col]=@p1.move_token
+            @b.printBoard
+            @@a+=1                      
+        else
+            puts
+            puts "Now #{@p2.identifier} turn"
+            puts "Place #{@p2.move_token} in board"
+            puts ""
+            @objx=@p2.askNextMove
+            @b.board[@objx.row][@objx.col]=@p2.move_token
+            @b.printBoard
+            @@a+=1
         end
     end
 
-    def rightDiagonal(board,board_size)
-        xrcount=1;
-        orcount=1;
-        for i in 0...(board_size-1) do
-            for j in 0..(board_size-1) do
-                if(i+j==board_size-1)
-                    # puts "I is #{i}"
-                    # puts "J is #{j}"  
-                    if(board[i][j]=="X" && board[i+1][j-1]=="X")
-                        xrcount=xrcount+1;
-                        if(xrcount==board_size)
-                            #  puts "Player X wins the game"
-                            return @result=@p1.identifier
-                            # return true;
-                            break;
-                        end
-                    elsif(board[i][j]=="O" && board[i+1][j-1]=="O")
-                        orcount=orcount+1;
-                        if(orcount==board_size)
-                            # puts "Player O  wins the game"
-                            return @result=@p2.identifier
-                            # return true;
-                            break;
-                        end
-                    else
-                        # puts "No Diagonal"
-                        return false 	
-                    end
-                end		
-            end												
-        end
-    end
+    
 
-   
-    def checkRow(board,board_size)
-        xcount=1;
-        ycount=1;
-        for i in 0..(board_size-1) do
-            for j in 0...(board_size-1) do
-                    # puts "I is #{i}"
-                    # puts "J is #{j}"  
-                    if(board[i][j]=="X" && board[i][j+1]=="X")
-                        xcount=xcount+1;
-                        if(xcount==board_size)
-                            #  puts "Player X wins the game"
-                            return @result=@p1.identifier
-                            # return true;
-                            break;
-                        end
-                    elsif(board[i][j]=="O" && board[i][j+1]=="O")
-                        ycount=ycount+1;
-                        if(ycount==board_size)
-                            # puts "Player O  wins the game"
-                            return @result=@p2.identifier
-                            # return true;
-                            break;
-                        end
-                    else
-                        # puts "No Diagonal"
-                        return false 	
-                    end
-            		
-            end												
-        end
-    end
+    # def leftDiagonal(board,board_size)
+    #     xlcount=1;
+    #     olcount=1;
+    #     for i in 0...(board_size-1) do
+    #         for j in 0...(board_size-1) do
+    #             if(i==j)
+    #                 # puts "I is #{i}"
+    #                 # puts "J is #{j}"  
+    #                 if(board[i][j]=="X" && board[i+1][j+1]=="X")
+    #                     xlcount=xlcount+1;
+    #                     if(xlcount==board_size)
+    #                         return @result=@p1.identifier
+    #                         # return true;
+    #                         break;
+    #                     end
+    #                 elsif(board[i][j]=="O" && board[i+1][j+1]=="O")
+    #                     olcount=olcount+1;
+    #                     if(olcount==board_size)
+    #                         # puts "Player O  wins the game"
+    #                         return @result=@p2.identifier
+    #                         # return true;
+    #                         break;
+    #                     end
+    #                 else
+    #                     # puts "No Diagonal"
+    #                     return false 	
+    #                 end
+    #             end		
+    #         end												
+    #     end
+    # end
+
+    # def rightDiagonal(board,board_size)
+    #     xrcount=1;
+    #     orcount=1;
+    #     for i in 0...(board_size-1) do
+    #         for j in 0..(board_size-1) do
+    #             if(i+j==board_size-1)
+    #                 # puts "I is #{i}"
+    #                 # puts "J is #{j}"  
+    #                 if(board[i][j]=="X" && board[i+1][j-1]=="X")
+    #                     xrcount=xrcount+1;
+    #                     if(xrcount==board_size)
+    #                         #  puts "Player X wins the game"
+    #                         return @result=@p1.identifier
+    #                         # return true;
+    #                         break;
+    #                     end
+    #                 elsif(board[i][j]=="O" && board[i+1][j-1]=="O")
+    #                     orcount=orcount+1;
+    #                     if(orcount==board_size)
+    #                         # puts "Player O  wins the game"
+    #                         return @result=@p2.identifier
+    #                         # return true;
+    #                         break;
+    #                     end
+    #                 else
+    #                     # puts "No Diagonal"
+    #                     return false 	
+    #                 end
+    #             end		
+    #         end												
+    #     end
+    # end
+
+    # def checkRow(board,board_size)
+    #     xcount=1;
+    #     ycount=1;
+    #     for i in 0...(board_size) do
+    #         for j in 0...(board_size-1) do
+    #             # if(i==j)
+    #                 # puts "I is #{i}"
+    #                 # puts "J is #{j}"  
+    #                 if(board[i][j]=="X" && board[i][j+1]=="X")
+    #                     xcount=xcount+1;
+    #                     puts "The xcount is #{xcount}"
+    #                     if(xcount==board_size)
+    #                         return @result=@p1.identifier
+    #                         # return true;
+    #                         break;
+    #                     end
+    #                 elsif(board[i][j]=="O" && board[i][j+1]=="O")
+    #                     ycount=ycount+1;
+    #                     puts "The ycount is #{ycount}"
+    #                     if(ycount==board_size)
+    #                         # puts "Player O  wins the game"
+    #                         return @result=@p2.identifier
+    #                         # return true;
+    #                         break;
+    #                     end
+    #                 else
+    #                     if(i==board_size-1 && j==board_size-2)
+    #                        return false 
+    #                     end  	
+    #                 end
+    #             # end		
+    #         end												
+    #     end
+    # end
+
+
+    
 
     def checkColumn(board,board_size)
         xcount=1;
         ycount=1;
-        for i in 0..(board_size-1) do
+        for i in 0...(board_size) do
             for j in 0...(board_size-1) do
                     # puts "I is #{i}"
                     # puts "J is #{j}"  
@@ -264,26 +258,27 @@ class Game
                             break;
                         end
                     else
-                        # puts "No Diagonal"
-                        return false 	
+                        if(i==board_size-1 && j==board_size-2)
+                            return false 
+                        end 
+
                     end
             		
             end												
         end
     end
-    
 
-    def showResult   
-        if(self.gameIsWon?)
-            puts ""
-            puts "Yay #{@result} wins!!!"
-            # exit
-        elsif(!self.gameIsDraw?)
-            puts ""
-            puts "Game is Tied"
-        end
-    end
- 
+    # def showResult   
+    #     if(self.gameIsWon?)
+    #         puts ""
+    #         puts "Yay #{@result} wins!!!"
+       
+    #         # exit
+    #     # elsif(!self.gameIsDraw?)
+    #     #     puts ""
+    #     #     puts "Game is Tied"
+    #     # end
+    # end
 end
 
 @game=Game.new

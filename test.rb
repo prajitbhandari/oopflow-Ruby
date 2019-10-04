@@ -10,10 +10,15 @@ class Game
     end
     
     def askBoardSize
-        puts "Welcome to Tic Tac Toe Game"
+        puts "Welcome to Tic Tac Toe Game!!!"
     #   prompt board size form user
         puts "Enter the size of the Board Grid"
         @size=(gets.chomp).to_i
+        if(@size<2)
+            puts "Please Provide Size Greater than or equal to 2"
+            puts 
+            self.askBoardSize
+        end
         # puts "The Board size is #{@size}"
         return @size
     end
@@ -23,22 +28,24 @@ class Game
         puts "First Proceed Player #{@p1.identifier} turn"
         puts "Place #{@p1.move_token}"
         puts ""
+        puts "FIrst Board is #{@b.board}"
         @objx=@p1.askNextMove
-
-        if(@objx.row>=@b.board_size||@objx.col>=@b.board_size)
-            puts " "
-            puts "Choose valid row and column"
+        if(@objx.row>=@b.board_size || @objx.col>=@b.board_size)
+            puts "#{@p1.identifier} choose valid row and column"
+            puts "==================================================="
             self.proceed
         end
         @b.board[@objx.row][@objx.col]=@p1.move_token 
         # puts "Now currently obj b is #{@b.inspect}"       
         @b.printBoard
-
         @@a=2
         @@draw_counter=0
+
         #pseudocode
         until self.ended?
             # puts "Inside Self.ended"
+            puts 
+            puts "==================================================="
             self.handleNextMove
         end
 
@@ -77,6 +84,7 @@ class Game
     end
     
     def gameIsDraw?
+        puts "Hey Iam game Draw func "
         @@draw_counter+=1
         # puts "i am in"
         if(@@draw_counter==@b.board_size*@b.board_size)
@@ -93,13 +101,14 @@ class Game
         end
        
     end
-    
-   
+
     def handleNextMove   
         # puts "Inside handle Next Move"
     #    while (@@a<=@b.board_size*@b.board_size)
+                puts "The value of @@a is #{@@a}"
+                puts "The value of draw counter is #{@@draw_counter}"
             if(@@a%2!=0)
-                puts " "
+                puts
                 puts "Now #{@p1.identifier} turn"
                 puts "Place #{@p1.move_token} in board"
                 puts ""
@@ -108,37 +117,41 @@ class Game
                     puts " "
                     puts "Choose valid row and column"
                     self.handleNextMove
-                elsif(@b.board[@objx.row][@objx.col]=="")
+                end
+
+                if(@b.board[@objx.row][@objx.col]=="X" ||@b.board[@objx.row][@objx.col]=="O" )
+                    puts "Player 1 select another cell"
+                    puts "whats wrong Player 1!!"
+                    self.handleNextMove  
+                elsif(@b.board[@objx.row][@objx.col]!="X"||@b.board[@objx.row][@objx.col]!="O")
+                    puts "why looping Player 1!!"
                     @b.board[@objx.row][@objx.col]=@p1.move_token
                     @b.printBoard
-                    @@a+=1
-                else
-                   puts "#{@p1.identifier} please select another cell"
-                   self.handleNextMove     
-                end 
-                
+                    @@a+=1 
+                end                
             else
-                puts " "
+                puts
                 puts "Now #{@p2.identifier} turn"
                 puts "Place #{@p2.move_token} in board"
                 puts ""
-                @objO=@p2.askNextMove
-                if(@objO.row>=@b.board_size||@objO.col>=@b.board_size)
+                @objx=@p2.askNextMove
+                if(@objx.row>=@b.board_size||@objx.col>=@b.board_size)
                     puts " "
                     puts "Choose valid row and column"
                     self.handleNextMove
-                elsif(@b.board[@objO.row][@objO.col]=="")
-                    @b.board[@objO.row][@objO.col]=@p2.move_token
+                end
+
+                if(@b.board[@objx.row][@objx.col]=="X" ||@b.board[@objx.row][@objx.col]=="O" )
+                    puts "Player 2 select another cell"
+                    puts "whats wrong Player 2!!"
+                    self.handleNextMove  
+                elsif(@b.board[@objx.row][@objx.col]!="X"||@b.board[@objx.row][@objx.col]!="O")
+                    puts "why looping Player 2!!"
+                    @b.board[@objx.row][@objx.col]=@p2.move_token
                     @b.printBoard
-                    @@a+=1
-                else
-                    puts "#{@p2.identifier} please select another cell"
-                    self.handleNextMove     
+                    @@a+=1    
                 end 
             end
-            
-        # end
-
     end
 
     def leftDiagonal(board,board_size)
@@ -212,28 +225,28 @@ class Game
         ycount=1;
         for i in 0..(board_size-1) do
             for j in 0...(board_size-1) do
-                # puts "I is #{i}"
-                # puts "J is #{j}"  
-                if(board[i][j]=="X" && board[i][j+1]=="X")
-                    xcount=xcount+1;
-                    if(xcount==board_size)
-                        #  puts "Player X wins the game"
-                        return @result=@p1.identifier
-                        # return true;
-                        break;
-                    end
-                elsif(board[i][j]=="O" && board[i][j+1]=="O")
-                    ycount=ycount+1;
-                    if(ycount==board_size)
-                        # puts "Player O  wins the game"
-                        return @result=@p2.identifier
-                        # return true;
-                        break;
-                    end
-                else
-                    # puts "No Diagonal"
-                    return false 	
-                end  		
+                    # puts "I is #{i}"
+                    # puts "J is #{j}"  
+                    if(board[i][j]=="X" && board[i][j+1]=="X")
+                        xcount=xcount+1;
+                        if(xcount==board_size)
+                            #  puts "Player X wins the game"
+                            return @result=@p1.identifier
+                            # return true;
+                            break;
+                        end
+                    elsif(board[i][j]=="O" && board[i][j+1]=="O")
+                        ycount=ycount+1;
+                        if(ycount==board_size)
+                            # puts "Player O  wins the game"
+                            return @result=@p2.identifier
+                            # return true;
+                            break;
+                        end
+                    else
+                        # puts "No Diagonal"
+                        return false 	
+                    end		
             end												
         end
     end
