@@ -88,29 +88,50 @@ class Game
     end
 
     def handleNextMove   
-        puts "The value of @@a is #{@@a}"
-        puts "The value of draw counter is #{@@draw_counter}"
         if(@@a%2!=0)
             puts
             puts "Now #{@p1.identifier} turn"
             puts "Place #{@p1.move_token} in board"
             puts ""
             @objx=@p1.askNextMove
-            @b.board[@objx.row][@objx.col]=@p1.move_token
-            @b.printBoard
-            @@a+=1                      
+            if(@objx.row>=@b.board_size||@objx.col>=@b.board_size)
+                puts " "
+                puts "#{@p1.identifier} choose valid row and column"
+                self.handleNextMove
+            else
+                if(@b.board[@objx.row][@objx.col]=="X" ||@b.board[@objx.row][@objx.col]=="O" )
+                    puts "#{@p1.identifier} select another cell"
+                    self.handleNextMove  
+                elsif(@b.board[@objx.row][@objx.col]!="X"||@b.board[@objx.row][@objx.col]!="O")
+                    @b.board[@objx.row][@objx.col]=@p1.move_token
+                    @b.printBoard
+                    @@a+=1 
+                end
+            end
+             
         else
             puts
             puts "Now #{@p2.identifier} turn"
             puts "Place #{@p2.move_token} in board"
             puts ""
             @objx=@p2.askNextMove
-            @b.board[@objx.row][@objx.col]=@p2.move_token
-            @b.printBoard
-            @@a+=1
+            if(@objx.row>=@b.board_size||@objx.col>=@b.board_size)
+                puts " "
+                puts "#{@p2.identifier} choose valid row and column"
+                self.handleNextMove
+            else
+                if(@b.board[@objx.row][@objx.col]=="X" ||@b.board[@objx.row][@objx.col]=="O" )
+                    puts "#{@p2.identifier} select another cell"
+                    self.handleNextMove  
+                elsif(@b.board[@objx.row][@objx.col]!="X"||@b.board[@objx.row][@objx.col]!="O")
+                    @b.board[@objx.row][@objx.col]=@p2.move_token
+                    @b.printBoard
+                    @@a+=1    
+                end 
+            end 
         end
     end
-    
+
     def leftDiagonal(board,board_size)
         xlcount=1;
         olcount=1;
@@ -201,7 +222,6 @@ class Game
                 if(board[j][i]=="X" && board[j+1][i]=="X")
                     xcount=xcount+1;
                     if(xcount==board_size)
-                        puts "Player X wins the game"
                         return @result=@p1.identifier
                         # return true;
                         break;
@@ -209,7 +229,6 @@ class Game
                 elsif(board[j][i]=="O" && board[j+1][i]=="O")
                     ycount=ycount+1;
                     if(ycount==board_size)
-                        puts "Player O  wins the game"
                         return @result=@p2.identifier
                         # return true;
                         break;
