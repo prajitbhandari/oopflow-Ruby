@@ -7,6 +7,8 @@ class Game
         @boardSize = self.askBoardSize
         @b = Board.new(@boardSize,@p1,@p2)
         @b.show
+        @@move_counter=1
+        @@draw_counter=0
         self.proceed
     end
     
@@ -24,23 +26,7 @@ class Game
     end
 
     def proceed
-        puts " "
-        puts "First Proceed Player #{@p1.identifier} turn"
-        puts "Place #{@p1.move_token}"
-        puts ""
-        # puts "First Board is #{@b.board}"
-        @objx=@p1.askNextMove
-        if(@objx.row>=@b.board_size || @objx.col>=@b.board_size)
-            puts "#{@p1.identifier} choose valid row and column"
-            puts "==================================================="
-            self.proceed
-        end
-        @b.board[@objx.row][@objx.col]=@p1.move_token 
-        @b.printBoard
-        @@a=2
-        @@draw_counter=0
-
-        #pseudocode
+      #pseudocode
         until self.ended?
             puts 
             puts "==================================================="
@@ -48,8 +34,7 @@ class Game
         end
 
         self.showResult
-
-        #end of pseudocode
+      #end of pseudocode
 
         # unless self.ended?
         #     self.handleNextMove  
@@ -88,14 +73,14 @@ class Game
     end
 
     def handleNextMove   
-        if(@@a%2!=0)
+        if(@@move_counter%2!=0)
             puts
             puts "Now #{@p1.identifier} turn"
             puts "Place #{@p1.move_token} in board"
-            puts ""
+            puts 
             @objx=@p1.askNextMove
             if(@objx.row>=@b.board_size||@objx.col>=@b.board_size)
-                puts " "
+                puts 
                 puts "==================================================="
                 puts "#{@p1.identifier} choose valid row and column"
                 self.handleNextMove
@@ -107,7 +92,7 @@ class Game
                 elsif(@b.board[@objx.row][@objx.col]!="X"||@b.board[@objx.row][@objx.col]!="O")
                     @b.board[@objx.row][@objx.col]=@p1.move_token
                     @b.printBoard
-                    @@a+=1 
+                    @@move_counter+=1 
                 end
             end
              
@@ -115,10 +100,10 @@ class Game
             puts
             puts "Now #{@p2.identifier} turn"
             puts "Place #{@p2.move_token} in board"
-            puts ""
+            puts 
             @objx=@p2.askNextMove
             if(@objx.row>=@b.board_size||@objx.col>=@b.board_size)
-                puts " "
+                puts 
                 puts "==================================================="
                 puts "#{@p2.identifier} choose valid row and column"
                 self.handleNextMove
@@ -130,7 +115,7 @@ class Game
                 elsif(@b.board[@objx.row][@objx.col]!="X"||@b.board[@objx.row][@objx.col]!="O")
                     @b.board[@objx.row][@objx.col]=@p2.move_token
                     @b.printBoard
-                    @@a+=1    
+                    @@move_counter+=1    
                 end 
             end 
         end
@@ -253,11 +238,11 @@ class Game
     def showResult   
         if(self.gameIsWon?)
             # debugger
-            puts ""
+            puts
             puts "Yay #{@result} wins!!!"
        
         elsif(!self.gameIsDraw?)
-            puts ""
+            puts 
             puts "Game is Tied"
         end
     end
