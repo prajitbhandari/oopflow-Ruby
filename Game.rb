@@ -1,5 +1,5 @@
 require_relative 'Board.rb'
-# require 'byebug'
+require 'byebug'
 class Game
     def initialize
         @p1 = Player.new('Player 1',"X")
@@ -26,16 +26,14 @@ class Game
     end
 
     def proceed
-      #pseudocode
         until self.ended?
             puts 
             puts "==================================================="
             self.handleNextMove
         end
-
+        # debugger
         self.showResult
-      #end of pseudocode
-
+     
         # unless self.ended?
         #     self.handleNextMove  
         # else
@@ -48,28 +46,22 @@ class Game
     end
     
     def gameIsWon?
-        # referencePlayer
-        # referencePlayerMoves
-        self.rightDiagonal(@b.board,@b.board_size)||
         self.leftDiagonal(@b.board,@b.board_size)||
+        self.rightDiagonal(@b.board,@b.board_size)||
         self.checkRow(@b.board,@b.board_size)||
         self.checkColumn(@b.board,@b.board_size)   
     end
     
     def gameIsDraw?
         @@draw_counter+=1
-        if(@@draw_counter==@b.board_size*@b.board_size)
-            if(self.leftDiagonal(@b.board,@b.board_size)==false &&
+        if(@@draw_counter==(@b.board_size*@b.board_size)+1)
+            self.leftDiagonal(@b.board,@b.board_size)==false &&
                 self.rightDiagonal(@b.board,@b.board_size)==false &&
                 self.checkRow(@b.board,@b.board_size)==false &&
-                self.checkColumn(@b.board,@b.board_size)==false
-              )
-              return true
-            end 
+                self.checkColumn(@b.board,@b.board_size)==false    
         else
-            return false  
+            return false     
         end
-       
     end
 
     def handleNextMove   
@@ -241,7 +233,7 @@ class Game
             puts
             puts "Yay #{@result} wins!!!"
        
-        elsif(!self.gameIsDraw?)
+        elsif(self.gameIsDraw?)
             puts 
             puts "Game is Tied"
         end
