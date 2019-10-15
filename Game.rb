@@ -96,10 +96,12 @@ class Game
             @objx=@p1.askNextMove
             if(@objx.row>=@b.board_size||@objx.col>=@b.board_size)
                 puts " "
+                puts "==================================================="
                 puts "#{@p1.identifier} choose valid row and column"
                 self.handleNextMove
             else
                 if(@b.board[@objx.row][@objx.col]=="X" ||@b.board[@objx.row][@objx.col]=="O" )
+                    puts "==================================================="
                     puts "#{@p1.identifier} select another cell"
                     self.handleNextMove  
                 elsif(@b.board[@objx.row][@objx.col]!="X"||@b.board[@objx.row][@objx.col]!="O")
@@ -117,10 +119,12 @@ class Game
             @objx=@p2.askNextMove
             if(@objx.row>=@b.board_size||@objx.col>=@b.board_size)
                 puts " "
+                puts "==================================================="
                 puts "#{@p2.identifier} choose valid row and column"
                 self.handleNextMove
             else
                 if(@b.board[@objx.row][@objx.col]=="X" ||@b.board[@objx.row][@objx.col]=="O" )
+                    puts "==================================================="
                     puts "#{@p2.identifier} select another cell"
                     self.handleNextMove  
                 elsif(@b.board[@objx.row][@objx.col]!="X"||@b.board[@objx.row][@objx.col]!="O")
